@@ -38,6 +38,14 @@ export default function SiteFooter() {
             <XLogo className="h-3.5 w-3.5" />
           </a>
         </nav>
+
+         <p className="mx-auto mt-4 max-w-3xl text-center text-[10px] leading-relaxed text-[var(--faint)] sm:text-left">
+          Disclaimer: babycry is an independent interactive software experiment.
+          Payments are real and non-refundable. By submitting a product name and
+          URL, you authorize us to display that information publicly on the
+          leaderboard and spotlight. babycry does not guarantee traffic, clicks,
+          sales, or business results.
+        </p>
       </div>
     </footer>
   );
