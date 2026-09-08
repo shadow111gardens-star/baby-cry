@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Privacy — shhh.baby",
+  title: "Privacy — babycry",
   description:
-    "What shhh.baby collects about you (almost nothing) and what it does with it (show it to everyone, on purpose).",
+    "What babycry collects about you (almost nothing) and what it does with it (show it to everyone, on purpose).",
 };
 
 const SECTIONS: LegalSection[] = [

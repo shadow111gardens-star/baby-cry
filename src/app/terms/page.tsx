@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Terms — babycry",
+  title: "Terms — babycry - bidding your saas",
   description:
     "The slightly-too-serious terms for a website where real payments keep a virtual baby asleep.",
 };
