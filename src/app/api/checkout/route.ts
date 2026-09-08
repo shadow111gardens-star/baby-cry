@@ -71,6 +71,7 @@ export async function POST(request: Request) {
       },
 
       metadata: {
+         productId: PRODUCT_ID,
         productName,
         productUrl,
         amountCents,
