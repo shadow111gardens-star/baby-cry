@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Terms — shhh.baby",
+  title: "Terms — babycry",
   description:
     "The slightly-too-serious terms for a website where real payments keep a virtual baby asleep.",
 };
@@ -56,7 +56,7 @@ const SECTIONS: LegalSection[] = [
   {
     heading: "08 Liability",
     paragraphs: [
-      "The site is provided “as is”, without warranties of any kind. We are not liable for lost profits, lost sleep, sudden crying, or any damages arising from using — or listening to — shhh.baby.",
+      "The site is provided “as is”, without warranties of any kind. We are not liable for lost profits, lost sleep, sudden crying, or any damages arising from using — or listening to — babycry.",
     ],
   },
   {

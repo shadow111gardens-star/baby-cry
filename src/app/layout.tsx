@@ -14,9 +14,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "shhh.baby — pay to keep the internet's baby asleep",
+  title: "babycry",
   description:
-    "A very real baby runs on money. Every $1 buys exactly 1 minute of sleep. When the meter hits zero, it screams. Top bidders own the sponsor spotlight.",
+    "Keep the digital baby asleep with micro-bids and claim the top sponsor spotlight.",
 };
 
 export const viewport: Viewport = {

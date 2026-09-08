@@ -159,7 +159,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
               <BabyIcon className="h-5 w-5" strokeWidth={2.4} />
             </span>
             <span className="font-display text-lg font-semibold tracking-tight">
-              shhh<span className="text-gradient">.baby</span>
+              baby<span className="text-gradient">.cry</span>
             </span>
           </a>
 

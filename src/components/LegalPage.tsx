@@ -70,7 +70,7 @@ export default function LegalPage({
               <BabyIcon className="h-5 w-5" strokeWidth={2.4} />
             </span>
             <span className="font-display text-lg font-semibold tracking-tight">
-              shhh<span className="text-gradient">.baby</span>
+              baby<span className="text-gradient">.cry</span>
             </span>
           </Link>
           <Link href="/" className="btn-ghost !px-4 !py-2 text-xs sm:text-sm">

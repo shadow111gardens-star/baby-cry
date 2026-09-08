@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Rules — shhh.baby",
+  title: "Rules — baby.cry",
   description:
     "The official rules of the nursery: how the meter, the sleep, the crying, and the leaderboard work.",
 };
