@@ -393,24 +393,24 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
             <div>
               <p className="eyebrow">
                 <Sparkles className="h-3.5 w-3.5 text-[var(--accent-2)]" />
-                A live social experiment — silence is for sale
+                A virtual social experience — support keeps the baby sleeping.
               </p>
 
               <h1 className="font-display mt-3 text-[2.65rem] font-semibold leading-[0.98] tracking-tight min-[430px]:text-5xl sm:mt-4 sm:text-6xl xl:text-[4.4rem]">
-                Keep the baby{" "}
+                Keep the Virtual baby{" "}
                 <span className="text-gradient">
-                  {sleeping ? "asleep" : "quiet"}
+                  {sleeping ? "asleep" : "sleeping"}
                 </span>
                 .
               </h1>
 
               <p className="mt-4 max-w-md text-sm leading-relaxed text-[var(--muted)] min-[430px]:text-base sm:text-lg">
-                An extremely real baby runs on money. Every{" "}
+                A virtual baby runs on the community sleep meter Every{" "}
                 <strong className="font-semibold text-white">
-                  $1 buys exactly 1 minute
+                  $1 adds exactly 1 minute virtual sleep timer.
                 </strong>{" "}
                 of sleep. When the tank hits zero, it screams —
-                and the biggest bidder&apos;s product owns the
+                and thetop sponsor’s product&apos;s product owns the
                 spotlight.
               </p>
             </div>
@@ -470,7 +470,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
                 <span className="truncate">
                   {sleeping
                     ? "Add sleep — $1/min"
-                    : "Emergency bid — stop the crying"}
+                    : "Add sleep time"}
                 </span>
               </button>
 
@@ -542,13 +542,13 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
             <span key={half}>
               <span>BABYCRY</span>
               <Sparkles className="h-3.5 w-3.5 text-[var(--accent-2)]" />
-              <span>$1 = 1 minute of silence</span>
+              <span>$1 = 1 minute of sleep</span>
               <Sparkles className="h-3.5 w-3.5 text-[var(--accent-2)]" />
-              <span>When the meter dies, the baby cries</span>
+              <span>WHEN THE TIMER HITS ZERO, THE BABY CRIES</span>
               <Sparkles className="h-3.5 w-3.5 text-[var(--accent-2)]" />
-              <span>Top bid takes the spotlight</span>
+              <span>Top sponsor's product takes the spotlight</span>
               <Sparkles className="h-3.5 w-3.5 text-[var(--accent-2)]" />
-              <span>BABY IS HUNGRY FOR ACTUAL CASH</span>
+              <span>BABY IS HUNGRY</span>
               <Sparkles className="h-3.5 w-3.5 text-[var(--accent-2)]" />
             </span>
           ))}
@@ -594,7 +594,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
 
               <p className="eyebrow">
                 <Crown className="h-3.5 w-3.5 text-[var(--accent-2)]" />
-                Top bidder — spotlight
+                Top sponsor — spotlight
               </p>
 
               <h3 className="font-display mt-4 text-2xl font-semibold leading-tight sm:text-4xl">
@@ -602,8 +602,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
               </h3>
 
               <p className="mt-3 max-w-sm text-sm leading-relaxed text-[var(--muted)]">
-                The baby is livid and nobody&apos;s product is
-                up here. Historic opportunity — any bid makes
+                Be the first sponsor to get featured here. Add your brand and showcase your product to everyone.
                 you the inaugural sponsor.
               </p>
 
@@ -613,7 +612,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
                 className="btn-primary mt-6"
               >
                 <Crown className="h-4 w-4" />
-                Claim the throne — $1
+                Become the top sponsor — $1
               </button>
             </div>
           )}
@@ -638,11 +637,11 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
                 <BedDouble className="h-6 w-6 text-[var(--faint)]" />
 
                 <p className="text-sm text-[var(--muted)]">
-                  No bids yet.
+                  No contributions yet.
                 </p>
 
                 <p className="max-w-[240px] text-xs text-[var(--faint)]">
-                  Be the first name the baby dreams about.
+                  Be the first to support the baby's sleep.
                 </p>
               </div>
             ) : (
@@ -710,20 +709,20 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
             {
               n: "01",
               icon: Coins,
-              title: "Feed the meter",
-              body: "$1 buys exactly one minute of sleep. $0.10 buys six seconds. The baby does not negotiate.",
+              title: "Add to the sleep meter",
+              body: "Every $1 adds 1 minute to the virtual sleep timer. Smaller amounts scale accordingly.",
             },
             {
               n: "02",
               icon: BedDouble,
-              title: "Silence while funded",
-              body: "The second the tank hits zero the wailing resumes. Top up before expiry and the nap never breaks.",
+              title: "Sleep while funded",
+              body: "The baby stays asleep while the timer has time. When it hits zero, the crying starts again. Add more time to keep it sleeping.",
             },
             {
               n: "03",
               icon: Megaphone,
-              title: "Top bid gets famous",
-              body: "The biggest single bid owns the spotlight — product name and live link, seen by everyone checking on a screaming baby.",
+              title: "Top sponsor gets spotlight",
+              body: "The highest single contribution gets featured — product name and live link, visible to everyone visiting the site.",
             },
           ].map((c) => (
             <div
@@ -803,7 +802,7 @@ function SpotlightCard({
 
       <p className="eyebrow relative">
         <Crown className="h-3.5 w-3.5 text-[var(--accent-2)]" />
-        Top bidder — spotlight
+        Top sponsor — spotlight
       </p>
 
       <a

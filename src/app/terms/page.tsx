@@ -21,7 +21,7 @@ const SECTIONS: LegalSection[] = [
     ],
   },
   {
-    heading: "03 The spotlight & the leaderboard",
+    heading: "03 The sponsors & the leaderboard",
     list: [
       "Every accepted bid is shown publicly on the leaderboard with your submitted product name and link.",
       "The leaderboard is ranked by bid amount, highest first. Ties go to the earlier bid.",
