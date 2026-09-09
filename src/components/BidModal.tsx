@@ -421,16 +421,15 @@ export default function BidModal({
                 className="h-3.5 w-3.5 text-gradient"
                 strokeWidth={2.4}
               />
-              Buy silence
+              SUPPORT THE EXPERIENCE
             </p>
 
             <h2 className="font-display mt-2 text-2xl font-semibold tracking-tight">
-              Bid for baby sleep
+              Add time to the virtual sleep timer
             </h2>
 
             <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">
-              $1 = 1 minute. Your product takes the feed — outbid everyone and
-              it takes the spotlight.
+              $1 = 1 minute. Add time to the virtual sleep timer and feature your product on the sponsor leaderboard.
             </p>
           </div>
 
@@ -494,7 +493,7 @@ export default function BidModal({
           <div>
             <label htmlFor="bm-amount" className="field-label mb-2">
               <BadgeDollarSign className="h-3.5 w-3.5" />
-              Bid amount
+              CONTRIBUTION
             </label>
 
             <div className="grid grid-cols-4 gap-2">
@@ -550,7 +549,7 @@ export default function BidModal({
           {wouldTakeSpotlight && (
             <div className="flex items-center gap-2.5 rounded-xl border border-[var(--accent-2)]/35 bg-[color-mix(in_srgb,var(--accent-2)_12%,transparent)] px-3.5 py-2.5 text-xs font-medium text-[var(--accent-2)]">
               <Crown className="h-4 w-4 shrink-0" />
-              This bid would steal the sponsor spotlight.
+              This contribution would take the sponsor spotlight.
             </div>
           )}
 
@@ -559,7 +558,7 @@ export default function BidModal({
             topCents !== null && (
               <p className="text-xs text-[var(--faint)]">
                 Spotlight needs more than {formatMoney(topCents)} in a
-                single bid.
+                single contribution.
               </p>
             )}
 
@@ -593,13 +592,12 @@ export default function BidModal({
 
             {pending
               ? "Opening checkout…"
-              : `Feed the meter — ${formatMoney(Math.max(cents, 0))}`}
+              : `Add sleep time — ${formatMoney(Math.max(cents, 0))}`}
           </button>
         </div>
 
         <p className="mt-4 text-center text-[11px] leading-relaxed text-[var(--faint)]">
-          Secure live checkout via Polar. All bids are final and real money
-          keeps the baby asleep.
+          Secure checkout via Dodo Payments. Your contribution adds time to the virtual sleep timer and supports the digital experience.
         </p>
       </form>
     </div>

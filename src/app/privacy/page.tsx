@@ -4,69 +4,74 @@ import LegalPage, { type LegalSection } from "@/components/LegalPage";
 export const metadata: Metadata = {
   title: "Privacy — babycry",
   description:
-    "What babycry collects about you (almost nothing) and what it does with it (show it to everyone, on purpose).",
+    "What babycry collects about you and how that information is used to operate the interactive digital experience.",
 };
 
 const SECTIONS: LegalSection[] = [
   {
     heading: "01 The short version",
     paragraphs: [
-      "We collect almost nothing, we don't track you, and the only thing we deliberately share is the bid and payment details you publicly placed — because that's the entire point of the site.",
+      "We collect only the information needed to operate the babycry website, process contributions, display sponsor information, and maintain the service. We do not require user accounts or passwords.",
     ],
   },
   {
     heading: "02 What we collect",
     list: [
-      "Product name — the text you type into the bid form.",
-      "Product link — the URL you submit with your bid.",
-      "Bid amount & time — how much you actually paid and when the timer extended.",
-      "Payment transaction records — securely handled and processed via our payment provider (Stripe); we do not store full raw credit card numbers on our servers.",
-      "Basic server logs — standard technical records (IP address, browser, timestamp) kept briefly by the hosting infrastructure for security and debugging.",
+      "Product name — the text you submit through the sponsor form.",
+      "Product link — the public URL you submit with your contribution.",
+      "Contribution amount & time — the amount contributed and the time the contribution was made.",
+      "Payment transaction records — securely handled and processed by our third-party payment provider. We do not store full raw credit card numbers on our servers.",
+      "Basic server logs — standard technical information such as IP address, browser type, timestamp, and request information may be temporarily processed by our hosting infrastructure for security, reliability, and debugging.",
     ],
   },
   {
-    heading: "03 What we never collect",
+    heading: "03 What we do not collect",
     list: [
-      "No saved credit card numbers or banking passwords — payments are handled securely through Stripe.",
-      "No user accounts, passwords, or registration forms — there is no sign-up required.",
-      "No tracking cookies, third-party analytics beacons, or advertising pixels.",
-      "No location data beyond what standard server logs imply.",
+      "We do not store full credit card numbers or banking passwords on our servers.",
+      "We do not require user accounts, passwords, or registration forms.",
+      "We do not intentionally use tracking cookies, advertising pixels, or third-party analytics beacons.",
+      "We do not intentionally collect precise location information.",
     ],
   },
   {
     heading: "04 What is public by design",
     paragraphs: [
-      "Your product name, product link, and bid amount are shown publicly in the leaderboard — and the highest bid is featured on the spotlight card — for as long as the site keeps them. Do not bid on behalf of products you wouldn't want attached to a crying baby.",
+      "If you submit a product name and public product link, that information may be displayed publicly on the website together with your contribution amount and leaderboard position. Featured sponsor information may also be displayed prominently on the site.",
+      "Only submit information that you are comfortable making publicly available. We are not responsible for information that you voluntarily submit for public display.",
     ],
   },
   {
     heading: "05 Cookies & local storage",
     paragraphs: [
-      "The site does not set any tracking cookies. Preferences like the sound toggle live in your browser's memory only and vanish when you close the tab — we forget you instantly, like a baby with a new shiny object.",
+      "The site does not intentionally use tracking cookies. Preferences such as the sound toggle may be stored locally in your browser. This local storage is used only to provide basic website functionality and preferences.",
     ],
   },
   {
     heading: "06 Third-party content & payments",
     paragraphs: [
-      "The crying sound effect comes from freesoundslibrary.com (CC BY 4.0) and the lullaby from mixkit.co (Mixkit License). Audio files are hosted locally. Payments are processed securely via Stripe (refer to Stripe's privacy policy for their data handling). External product links in the leaderboard lead to sites we don't control — their privacy policies apply there.",
+      "The crying sound effect comes from freesoundslibrary.com (CC BY 4.0) and the lullaby from mixkit.co (Mixkit License). Audio files are hosted locally.",
+      "Payments are processed securely by our third-party payment provider. We do not receive or store full raw payment card details on our servers. The payment provider may collect and process information according to its own privacy policy and terms.",
+      "External product links displayed on the website lead to websites and services that we do not control. Once you leave babycry, the privacy practices of the destination website apply.",
     ],
   },
   {
     heading: "07 Data retention & deletion",
     paragraphs: [
-      "Bids and live database records are stored until the site resets or we clean the nursery. If you want your submission removed, message us on X at @babycry and we'll delete it — no forms, no waiting period, no guilt trip.",
+      "Sponsor submissions and related website records may be retained for as long as they are needed to operate the service, maintain the leaderboard, comply with legal obligations, resolve disputes, or maintain security.",
+      "If you want a publicly displayed sponsor submission removed, message us on X at @babycry and provide enough information for us to identify the submission. We may remove or modify eligible submissions where appropriate.",
     ],
   },
   {
     heading: "08 Children",
     paragraphs: [
-      "Ironically, this site about a baby is not directed at children under 13. If you are a baby and you are reading this, please stop crying.",
+      "babycry is an interactive digital entertainment service and is not directed toward children under 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided personal information to us, please contact us so we can review and remove it where appropriate.",
     ],
   },
   {
     heading: "09 Changes & contact",
     paragraphs: [
-      "We may update this policy; the version posted here is current. Privacy questions go to @abhay8769 on X.",
+      "We may update this Privacy Policy from time to time to reflect changes to the service, technology, or legal requirements. The latest version published on this page will apply from its effective date.",
+      "Privacy questions or data-related requests can be sent to us on X at @abhay8769.",
     ],
   },
 ];
@@ -77,7 +82,7 @@ export default function PrivacyPage() {
       current="privacy"
       eyebrow="Your data, or the lack of it"
       title="Privacy Policy"
-      intro="The most honest privacy policy on the internet: there's barely any data to write one about."
+      intro="We collect only the information needed to operate the interactive experience, process contributions, and display sponsor information."
       sections={SECTIONS}
     />
   );

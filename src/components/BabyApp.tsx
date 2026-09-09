@@ -383,7 +383,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
               <p className="max-w-[55%] text-right text-[11px] leading-relaxed text-[var(--faint)] sm:max-w-[46%] sm:text-xs">
                 {sleeping
                   ? "the nap continues until the very last paid second"
-                  : "the baby stopped sleeping the moment the money did"}
+                  : "The baby started crying — the timer hit zero."}
               </p>
             </div>
           </div>
@@ -574,8 +574,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
           </div>
 
           <p className="max-w-xs text-sm leading-relaxed text-[var(--muted)]">
-            Ranked purely by bid amount — pay more, climb
-            higher. Rank #1&apos;s product owns the spotlight
+            Ranked purely by contribution amount — pay more, rise higher. Rank #1&apos;s product owns the spotlight
             card.
           </p>
         </div>

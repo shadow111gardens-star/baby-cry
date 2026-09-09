@@ -4,62 +4,64 @@ import LegalPage, { type LegalSection } from "@/components/LegalPage";
 export const metadata: Metadata = {
   title: "Rules — baby.cry",
   description:
-    "The official rules of the nursery: how the meter, the sleep, the crying, and the leaderboard work.",
+    "The official rules of the virtual experience: how the sleep meter, animations, contributions, and sponsor leaderboard work.",
 };
 
 const SECTIONS: LegalSection[] = [
   {
-    heading: "01 Rule one — money is sleep",
+    heading: "01 Rule one — contributions add virtual sleep time",
     list: [
-      "$1 buys exactly 1 minute of baby sleep. Always.",
-      "Smaller bids scale linearly: $0.10 = 6 seconds, $0.50 = 30 seconds.",
-      "Every cent buys 600 milliseconds. $1 = 100 cents = 60,000 ms = 1 minute. The math is not negotiable.",
+      "$1 adds exactly 1 hour to the virtual sleep timer. Always.",
+      "Smaller contributions scale linearly: $0.10 = 6 minutes, $0.50 = 30 minutes.",
+      "Every cent adds 36 seconds of virtual sleep time. $1 = 100 cents = 3,600 seconds = 1 hour.",
+      "The conversion applies only to the virtual timer displayed on the website.",
     ],
   },
   {
-    heading: "02 Rule two — the meter always runs",
+    heading: "02 Rule two — the virtual meter always runs",
     list: [
-      "Paid sleep counts down in real time, second by second, even when nobody is watching.",
-      "New bids stack on top of remaining time — if the baby is asleep, your bid extends the nap from its current expiry.",
-      "If the tank is empty, your bid starts fresh from the moment it lands.",
-      "There is no pause button. Babies respect no schedule.",
+      "Virtual sleep time counts down in real time, second by second, even when nobody is watching.",
+      "New contributions are added to the remaining time — if the virtual baby is sleeping, the contribution extends the timer from its current expiry.",
+      "If the timer reaches zero, a new contribution starts the timer again from the moment it is processed.",
+      "There is no pause button for the virtual timer.",
     ],
   },
   {
-    heading: "03 Rule three — zero means crying",
+    heading: "03 Rule three — zero means the crying animation starts",
     paragraphs: [
-      "The instant the meter hits 00:00, the baby wakes and starts crying: the whole site flips to red alert, and anyone with sound enabled hears the wail. It stops only when a new bid lands.",
+      "When the virtual timer reaches 00:00, the virtual baby wakes and the website switches to its crying animation. Visitors with sound enabled may hear the site's crying sound effect. The animation changes again when additional virtual sleep time is added.",
     ],
   },
   {
-    heading: "04 Rule four — the leaderboard ranks amounts",
+    heading: "04 Rule four — the leaderboard ranks contributions",
     list: [
-      "Rank is decided by single-bid amount, highest first — not by total spent, not by loyalty.",
-      "Tie on amount? The earlier bid keeps the higher rank. Speed is the tiebreaker.",
-      "The leaderboard shows the top 15 bids.",
-      "Ranks update live for every visitor as bids land.",
+      "Rank is decided by individual contribution amount, highest first — not by total spent or loyalty.",
+      "Tie on amount? The earlier contribution keeps the higher rank. Time is the tiebreaker.",
+      "The leaderboard shows the top 15 qualifying contributions.",
+      "Ranks update live for every visitor as contributions are processed.",
     ],
   },
   {
-    heading: "05 Rule five — rank #1 takes the spotlight",
+    heading: "05 Rule five — rank #1 gets the spotlight",
     list: [
-      "The highest single bid's product name and link appear on the spotlight card next to the leaderboard.",
-      "Any single bid larger than the current top bid steals the spotlight immediately.",
-      "Losing the spotlight costs nothing emotionally, we are told. It feels like a lot.",
+      "The highest qualifying contribution's product name and public link appear on the featured sponsor card next to the leaderboard.",
+      "Any qualifying contribution larger than the current top contribution may take the featured sponsor position immediately.",
+      "Sponsor placement provides promotional visibility on the babycry website but does not guarantee traffic, impressions, clicks, conversions, sales, or fame.",
     ],
   },
   {
     heading: "06 Rule six — keep it clean",
     list: [
       "Product names and links must be legal, safe for work, and yours to share.",
-      "No scams, malware, phishing, hate, or spam — violators are removed without ceremony.",
-      "Removed bids keep no rank, no spotlight, and — because all bids are final — no refund either.",
+      "No scams, malware, phishing, hate, spam, fraudulent content, or other harmful material — violators may be removed.",
+      "Removed submissions lose their leaderboard and sponsor placement. Refunds are handled according to applicable law and our payment provider's policies.",
     ],
   },
   {
-    heading: "07 Rule seven — the baby is not real",
+    heading: "07 Rule seven — the baby is virtual",
     paragraphs: [
-      "The baby is SVG. The money is real. The sleep is a timestamp. The only real things on this site are the sound of crying and your competitive urge to be rank #1. Spend accordingly.",
+      "The baby is SVG. The payment is real. The sleep is a digital timestamp. The crying is a sound effect. The timer, reactions, rankings, and sponsor placements are entirely simulated software functionality.",
+      "Contributions do not affect any real baby, child, person, animal, physical service, or real-world outcome. Everything happens inside the virtual experience.",
     ],
   },
 ];
@@ -70,7 +72,7 @@ export default function RulesPage() {
       current="rules"
       eyebrow="How the nursery works"
       title="The Rules"
-      intro="Seven rules, one baby, zero mercy. Read them once and you'll know more than 99% of bidders."
+      intro="Seven rules, one virtual baby, zero confusion. Read them once and you'll know exactly how the sleep meter, contributions, and sponsor leaderboard work."
       sections={SECTIONS}
     />
   );
