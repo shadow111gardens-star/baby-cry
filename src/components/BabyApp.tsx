@@ -455,7 +455,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
                     )} keeps it down until ${formatHMS(
                       remainingMs + 60_000
                     )}`
-                  : "each new bid silences it instantly and starts the clock again"}
+                  : "each new contribution adds time and starts the clock again"}
               </p>
             </div>
 
@@ -484,8 +484,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
             </div>
 
             <p className="-mt-2 text-xs leading-relaxed text-[var(--faint)]">
-              Secure live payments. Every bid extends the baby's
-              sleep in real-time.
+              Secure live payments. Every contribution adds time to the virtual sleep timer in real-time.
             </p>
 
             {/* stats */}
@@ -510,7 +509,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
                 </p>
 
                 <p className="mt-0.5 text-[9px] uppercase tracking-[0.12em] text-[var(--faint)] min-[430px]:text-[10px] sm:text-[11px] sm:tracking-wider">
-                  bids placed
+                  CONTRIBUTIONS
                 </p>
               </div>
 
@@ -524,7 +523,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
                 </p>
 
                 <p className="mt-0.5 text-[9px] uppercase tracking-[0.12em] text-[var(--faint)] min-[430px]:text-[10px] sm:text-[11px] sm:tracking-wider">
-                  top bid
+                  TOP CONTRIBUTION
                 </p>
               </div>
             </div>
@@ -574,7 +573,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
           </div>
 
           <p className="max-w-xs text-sm leading-relaxed text-[var(--muted)]">
-            Ranked purely by contribution amount — pay more, rise higher. Rank #1&apos;s product owns the spotlight
+            Ranked by contribution amount — higher contributions receive higher placement. Rank #1&apos;s product owns the spotlight
             card.
           </p>
         </div>
