@@ -51,7 +51,9 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
   const [nowMs, setNowMs] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
-  const [toast, setToast] = useState<{ id: number; msg: string } | null>(null);
+  const [toast, setToast] = useState<{ id: number; msg: string } | null>(
+    null
+  );
 
   const refresh = useCallback(async () => {
     try {
@@ -76,6 +78,21 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
     }, 250);
 
     return () => clearInterval(t);
+  }, []);
+
+  /* clean Dodo payment parameters from the browser URL */
+  useEffect(() => {
+    const url = new URL(window.location.href);
+
+    const hasPaymentParams =
+      url.searchParams.has("payment_id") ||
+      url.searchParams.has("status") ||
+      url.searchParams.has("email") ||
+      url.searchParams.has("payment");
+
+    if (hasPaymentParams) {
+      window.history.replaceState({}, "", "/");
+    }
   }, []);
 
   /* live sync — poll + refresh when tab becomes visible */
