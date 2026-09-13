@@ -7,15 +7,18 @@ import {
 } from "drizzle-orm/pg-core";
 
 /**
- * Singleton row (id = 1) tracking the virtual baby's sleep and crying state.
+ * Singleton row (id = 1) tracking the virtual baby's sleep and presence.
  *
  * sleepUntil:
  * - Future timestamp = baby is sleeping.
  * - NULL/past = baby is crying.
  *
  * cryingSince:
- * - Timestamp when the current crying period started.
- * - NULL while the baby is sleeping.
+ * - Current crying period start time.
+ * - NULL while sleeping.
+ *
+ * lastSeenAt:
+ * - Last heartbeat received from an open browser.
  *
  * $1 == 100 cents == 60,000 ms (1 minute) of sleep.
  */
@@ -37,6 +40,16 @@ export const sleepState = pgTable("sleep_state", {
     .defaultNow(),
 });
 
+export const sitePresence = pgTable("site_presence", {
+  id: integer("id").primaryKey(),
+
+  lastSeenAt: timestamp("last_seen_at", {
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+});
+
 export const bids = pgTable("bids", {
   id: serial("id").primaryKey(),
 
@@ -50,8 +63,6 @@ export const bids = pgTable("bids", {
 
   /**
    * Dodo payment ID used for webhook idempotency.
-   * Existing rows can remain NULL.
-   * New Dodo-paid contributions store the payment ID here.
    */
   dodoPaymentId: text("dodo_payment_id").unique(),
 
@@ -64,3 +75,4 @@ export const bids = pgTable("bids", {
 
 export type BidRow = typeof bids.$inferSelect;
 export type SleepStateRow = typeof sleepState.$inferSelect;
+export type SitePresenceRow = typeof sitePresence.$inferSelect;
