@@ -42,7 +42,7 @@ const PRESENCE_TIMEOUT_MS = 15_000;
  * $0.50 = 30 seconds
  * $1.00 = 60 seconds
  */
-export const MS_PER_CENT = 600;
+export const MS_PER_CENT = 3000;
 
 function toPublicBid(row: typeof bids.$inferSelect): PublicBid {
   return {
