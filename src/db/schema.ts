@@ -7,7 +7,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 /**
- * Singleton row (id = 1) tracking the virtual baby's sleep and presence.
+ * Singleton row (id = 1) tracking the virtual baby's sleep state.
  *
  * sleepUntil:
  * - Future timestamp = baby is sleeping.
@@ -17,8 +17,9 @@ import {
  * - Current crying period start time.
  * - NULL while sleeping.
  *
- * lastSeenAt:
- * - Last heartbeat received from an open browser.
+ * pausedAt:
+ * - Timestamp when the shared timer was paused
+ *   because no active browser was detected.
  *
  * $1 == 100 cents == 60,000 ms (1 minute) of sleep.
  */
@@ -33,6 +34,10 @@ export const sleepState = pgTable("sleep_state", {
     withTimezone: true,
   }),
 
+  pausedAt: timestamp("paused_at", {
+    withTimezone: true,
+  }),
+
   updatedAt: timestamp("updated_at", {
     withTimezone: true,
   })
@@ -40,6 +45,12 @@ export const sleepState = pgTable("sleep_state", {
     .defaultNow(),
 });
 
+/**
+ * Singleton row (id = 1) tracking browser presence.
+ *
+ * lastSeenAt:
+ * - Last heartbeat received from an open browser.
+ */
 export const sitePresence = pgTable("site_presence", {
   id: integer("id").primaryKey(),
 
@@ -74,5 +85,7 @@ export const bids = pgTable("bids", {
 });
 
 export type BidRow = typeof bids.$inferSelect;
+
 export type SleepStateRow = typeof sleepState.$inferSelect;
+
 export type SitePresenceRow = typeof sitePresence.$inferSelect;
