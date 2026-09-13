@@ -6,6 +6,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const PRODUCT_ID = "pdt_0NnUbrTyrKtZRtghmGmCg";
+
 const MIN_CENTS = 100; // $1
 const MAX_CENTS = 100_000; // $1,000
 
@@ -92,8 +93,7 @@ export async function POST(request: Request) {
         amountCents: String(amountCents),
       },
 
-      return_url:
-        "https://www.babycry.lol/?payment=success",
+      return_url: "https://www.babycry.lol/",
     });
 
     return NextResponse.json({
