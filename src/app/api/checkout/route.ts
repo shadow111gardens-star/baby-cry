@@ -1,23 +1,27 @@
 import { NextResponse } from "next/server";
-import { polar } from "@/lib/polar";
+import { dodo } from "@/lib/dodo";
 import { isValidHttpUrl, normalizeUrl } from "@/lib/format";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const PRODUCT_ID = "d30560fd-c40a-4bcf-971e-d8400fb3a12a";
-const MIN_CENTS = 100;
-const MAX_CENTS = 100_000;
+const PRODUCT_ID = "pdt_0NnUbrTyrKtZRtghmGmCg";
+const MIN_CENTS = 100; // $1
+const MAX_CENTS = 100_000; // $1,000
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
     const productName =
-      typeof body.productName === "string" ? body.productName.trim() : "";
+      typeof body.productName === "string"
+        ? body.productName.trim()
+        : "";
 
     const productUrl = normalizeUrl(
-      typeof body.productUrl === "string" ? body.productUrl : ""
+      typeof body.productUrl === "string"
+        ? body.productUrl
+        : ""
     );
 
     const amountUsd =
@@ -29,66 +33,76 @@ export async function POST(request: Request) {
 
     if (productName.length < 2 || productName.length > 60) {
       return NextResponse.json(
-        { ok: false, error: "Product name must be 2–60 characters." },
+        {
+          ok: false,
+          error: "Product name must be 2–60 characters.",
+        },
         { status: 400 }
       );
     }
 
     if (!isValidHttpUrl(productUrl)) {
       return NextResponse.json(
-        { ok: false, error: "Please enter a valid product URL." },
+        {
+          ok: false,
+          error: "Please enter a valid product URL.",
+        },
         { status: 400 }
       );
     }
 
     if (!Number.isFinite(amountUsd)) {
       return NextResponse.json(
-        { ok: false, error: "Enter a valid bid amount." },
+        {
+          ok: false,
+          error: "Enter a valid contribution amount.",
+        },
         { status: 400 }
       );
     }
 
     const amountCents = Math.round(amountUsd * 100);
 
-    if (amountCents < MIN_CENTS || amountCents > MAX_CENTS) {
+    if (
+      amountCents < MIN_CENTS ||
+      amountCents > MAX_CENTS
+    ) {
       return NextResponse.json(
-        { ok: false, error: "Bid must be between $1 and $1,000." },
+        {
+          ok: false,
+          error: "Contribution must be between $1 and $1,000.",
+        },
         { status: 400 }
       );
     }
 
-    const checkout = await polar.checkouts.create({
-      products: [PRODUCT_ID],
-
-      prices: {
-        [PRODUCT_ID]: [
-          {
-            amountType: "custom",
-            priceCurrency: "usd",
-            minimumAmount: amountCents,
-          },
-        ],
-      },
+    const checkout = await dodo.checkoutSessions.create({
+      product_cart: [
+        {
+          product_id: PRODUCT_ID,
+          quantity: 1,
+          amount: amountCents,
+        },
+      ],
 
       metadata: {
-         productId: PRODUCT_ID,
+        productId: PRODUCT_ID,
         productName,
         productUrl,
-        amountCents,
+        amountCents: String(amountCents),
       },
 
-      successUrl:
-        "https://www.babycry.lol/?payment=success&checkout_id={CHECKOUT_ID}",
-
-      returnUrl: "https://www.babycry.lol/",
+      return_url:
+        "https://www.babycry.lol/?payment=success",
     });
 
     return NextResponse.json({
       ok: true,
-      checkoutUrl: checkout.url,
+      checkoutUrl: checkout.checkout_url,
+      sessionId: checkout.session_id,
     });
   } catch (error) {
-    console.error("Polar checkout creation failed:", error);
+    console.error("Dodo checkout creation failed:", error);
 
     return NextResponse.json(
       {
