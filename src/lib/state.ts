@@ -15,17 +15,20 @@ export type BabyState = {
   /** Server clock, ISO — the client offsets its own clock against this. */
   serverNow: string;
 
-  /** Paid sleep expires at this instant; baby is crying when it is in the past. */
+  /** Paid sleep expires at this instant. */
   sleepUntil: string | null;
+
+  /** When the current crying period started. */
+  cryingSince: string | null;
 
   totalBids: number;
   totalCents: number;
   totalMs: number;
 
-  /** Highest single bid ever — owns the spotlight. */
+  /** Highest single contribution — owns the spotlight. */
   topBid: PublicBid | null;
 
-  /** Ranked by bid amount, highest first (ties: earliest bid wins). */
+  /** Ranked by contribution amount, highest first. */
   leaderboard: PublicBid[];
 }
 
@@ -42,7 +45,11 @@ function toPublicBid(row: typeof bids.$inferSelect): PublicBid {
 
 async function ensureSleepRow() {
   await db.execute(
-    sql`INSERT INTO sleep_state (id) VALUES (1) ON CONFLICT (id) DO NOTHING`
+    sql`
+      INSERT INTO sleep_state (id, crying_since)
+      VALUES (1, NOW())
+      ON CONFLICT (id) DO NOTHING
+    `
   );
 }
 
@@ -52,6 +59,7 @@ export async function getBabyState(): Promise<BabyState> {
   const [stateRow] = await db
     .select({
       sleepUntil: sleepState.sleepUntil,
+      cryingSince: sleepState.cryingSince,
     })
     .from(sleepState)
     .where(sql`${sleepState.id} = 1`)
@@ -68,7 +76,7 @@ export async function getBabyState(): Promise<BabyState> {
   const topRows = await db
     .select()
     .from(bids)
-    .orderBy(desc(bids.amountCents), desc(bids.createdAt))
+    .orderBy(desc(bids.amountCents), asc(bids.createdAt))
     .limit(1);
 
   const leaderboardRows = await db
@@ -83,13 +91,21 @@ export async function getBabyState(): Promise<BabyState> {
 
   return {
     serverNow: new Date().toISOString(),
+
     sleepUntil: stateRow?.sleepUntil
       ? stateRow.sleepUntil.toISOString()
       : null,
+
+    cryingSince: stateRow?.cryingSince
+      ? stateRow.cryingSince.toISOString()
+      : null,
+
     totalBids: agg?.totalBids ?? 0,
     totalCents: agg?.totalCents ?? 0,
     totalMs: agg?.totalMs ?? 0,
+
     topBid: topRows[0] ? toPublicBid(topRows[0]) : null,
+
     leaderboard: leaderboardRows.map(toPublicBid),
   };
 }
@@ -100,8 +116,7 @@ export type NewBidInput = {
   amountCents: number;
 
   /**
-   * Dodo payment ID.
-   * Optional so the existing non-Dodo callers continue to work.
+   * Dodo payment ID used to prevent duplicate webhook processing.
    */
   dodoPaymentId?: string;
 };
@@ -119,13 +134,18 @@ export async function placeBid(
 
   const result = await db.transaction(async (tx) => {
     await tx.execute(
-      sql`INSERT INTO sleep_state (id) VALUES (1) ON CONFLICT (id) DO NOTHING`
+      sql`
+        INSERT INTO sleep_state (id, crying_since)
+        VALUES (1, NOW())
+        ON CONFLICT (id) DO NOTHING
+      `
     );
 
     /**
-     * When a Dodo payment ID is supplied, do not insert the same payment
-     * twice. The unique constraint on dodo_payment_id protects against
-     * webhook retries/races.
+     * Dodo webhook idempotency.
+     *
+     * If this payment was already processed, no second contribution
+     * is created and no additional sleep time is added.
      */
     const [bidRow] = await tx
       .insert(bids)
@@ -141,11 +161,6 @@ export async function placeBid(
       })
       .returning();
 
-    /**
-     * Duplicate Dodo webhook:
-     * the payment already exists, so return the existing contribution
-     * without adding sleep time again.
-     */
     if (!bidRow && input.dodoPaymentId) {
       const [existingBid] = await tx
         .select()
@@ -171,15 +186,25 @@ export async function placeBid(
       throw new Error("Failed to create contribution.");
     }
 
-    // Extend sleep from max(now, current sleepUntil) so time never stacks
-    // onto an already-expired window.
+    /**
+     * Payment received:
+     *
+     * 1. Extend sleep from max(now, current sleepUntil).
+     * 2. Clear cryingSince immediately.
+     *
+     * This makes the baby switch from crying to sleeping.
+     */
     await tx.execute(sql`
       UPDATE sleep_state
-      SET sleep_until = GREATEST(
-            COALESCE(sleep_until, NOW()),
-            NOW()
-          ) + (${ms} * INTERVAL '1 millisecond'),
-          updated_at = NOW()
+      SET
+        sleep_until = GREATEST(
+          COALESCE(sleep_until, NOW()),
+          NOW()
+        ) + (${ms} * INTERVAL '1 millisecond'),
+
+        crying_since = NULL,
+
+        updated_at = NOW()
       WHERE id = 1
     `);
 

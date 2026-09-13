@@ -61,7 +61,10 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
 
       if (res.ok) {
         const data = (await res.json()) as BabyState;
-        setSync({ data, at: Date.now() });
+        setSync({
+          data,
+          at: Date.now(),
+        });
       }
     } catch {
       /* keep last known state */
@@ -140,12 +143,28 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
     sleepUntilMs === null ? 0 : sleepUntilMs - serverNowMs;
 
   const sleeping = remainingMs > 0;
-  const hadFunds = sleepUntilMs !== null;
 
-  const awakeMs =
-    !sleeping && hadFunds
-      ? serverNowMs - (sleepUntilMs as number)
-      : 0;
+  /*
+   * While sleeping:
+   *   use the paid sleep timer.
+   *
+   * While crying:
+   *   use the persisted cryingSince timestamp.
+   *
+   * If the server has not yet persisted cryingSince after a sleep
+   * expiration, use sleepUntil as the exact moment crying started.
+   */
+  const cryingSinceMs = data.cryingSince
+    ? new Date(data.cryingSince).getTime()
+    : sleepUntilMs !== null && sleepUntilMs <= serverNowMs
+      ? sleepUntilMs
+      : serverNowMs;
+
+  const cryingElapsedMs = !sleeping
+    ? Math.max(0, serverNowMs - cryingSinceMs)
+    : 0;
+
+  const hadFunds = sleepUntilMs !== null;
 
   const { unlockAudio } = useNurseryAudio(
     soundOn,
@@ -245,7 +264,6 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
       {/* ------------------------------ nav ------------------------------ */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[color-mix(in_srgb,var(--bg-deep)_78%,transparent)] backdrop-blur-xl">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-2 px-3 sm:px-6">
-          {/* brand */}
           <a
             href="#top"
             className="flex min-w-0 shrink-0 items-center gap-2.5"
@@ -262,9 +280,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
             </span>
           </a>
 
-          {/* controls */}
           <div className="flex min-w-0 items-center gap-1.5 sm:gap-3">
-            {/* status */}
             <div
               aria-live="polite"
               className={`chip shrink-0 font-semibold uppercase tracking-[0.16em] sm:tracking-widest ${
@@ -282,7 +298,6 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
               </span>
             </div>
 
-            {/* sound */}
             <button
               type="button"
               onClick={() => {
@@ -311,24 +326,22 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
               )}
             </button>
 
-            {/* mobile CTA */}
             <button
               type="button"
               onClick={() => setModalOpen(true)}
-              aria-label="Fund the nap"
+              aria-label="Support the experience"
               className="btn-primary !h-9 !rounded-full !p-2.5 sm:hidden"
             >
               <Coins className="h-4 w-4" />
             </button>
 
-            {/* desktop CTA */}
             <button
               type="button"
               onClick={() => setModalOpen(true)}
               className="btn-primary hidden !px-5 !py-2.5 text-sm sm:inline-flex"
             >
               <Coins className="h-4 w-4" />
-              Fund the nap
+              Support the experience
             </button>
           </div>
         </div>
@@ -382,8 +395,8 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
               <div className="min-w-0">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--muted)] sm:text-[11px] sm:tracking-[0.22em]">
                   {sleeping
-                    ? "silence tank"
-                    : "tank status"}
+                    ? "virtual sleep timer"
+                    : "crying timer"}
                 </p>
 
                 <p className="digits mt-1 text-lg font-semibold sm:text-2xl">
@@ -391,7 +404,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
                     formatHMS(remainingMs)
                   ) : (
                     <span className="text-[var(--danger)]">
-                      EMPTY
+                      {formatHMS(cryingElapsedMs)}
                     </span>
                   )}
                 </p>
@@ -400,7 +413,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
               <p className="max-w-[55%] text-right text-[11px] leading-relaxed text-[var(--faint)] sm:max-w-[46%] sm:text-xs">
                 {sleeping
                   ? "the nap continues until the very last paid second"
-                  : "The baby started crying — the timer hit zero."}
+                  : "the virtual baby is crying — the timer is running"}
               </p>
             </div>
           </div>
@@ -422,12 +435,12 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
               </h1>
 
               <p className="mt-4 max-w-md text-sm leading-relaxed text-[var(--muted)] min-[430px]:text-base sm:text-lg">
-                A virtual baby runs on the community sleep meter Every{" "}
+                A virtual baby runs on the community sleep meter. Every{" "}
                 <strong className="font-semibold text-white">
-                  $1 adds exactly 1 minute virtual sleep timer.
+                  $1 adds exactly 1 minute to the virtual sleep timer.
                 </strong>{" "}
-                of sleep. When the tank hits zero, it screams —
-                and thetop sponsor’s product&apos;s product owns the
+                When the timer reaches zero, the virtual baby switches to its
+                crying animation — and the top sponsor&apos;s product gets the
                 spotlight.
               </p>
             </div>
@@ -440,15 +453,10 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
                     <Timer className="h-3.5 w-3.5 shrink-0 text-[var(--good)]" />
                     sleep remaining
                   </>
-                ) : hadFunds ? (
-                  <>
-                    <AlarmClock className="h-3.5 w-3.5 shrink-0 text-[var(--danger)]" />
-                    awake — funds ran out
-                  </>
                 ) : (
                   <>
                     <AlarmClock className="h-3.5 w-3.5 shrink-0 text-[var(--danger)]" />
-                    awake — the meter has never been fed
+                    crying — timer running
                   </>
                 )}
               </p>
@@ -460,18 +468,14 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
               >
                 {sleeping
                   ? formatHMS(remainingMs)
-                  : hadFunds
-                    ? formatHMS(awakeMs)
-                    : "00:00:00"}
+                  : formatHMS(cryingElapsedMs)}
               </p>
 
               <p className="mt-2 text-[11px] leading-relaxed text-[var(--faint)] sm:text-xs">
                 {sleeping
                   ? `$1 = 1 minute · ${formatMoney(
                       1
-                    )} keeps it down until ${formatHMS(
-                      remainingMs + 60_000
-                    )}`
+                    )} adds 1 minute to the timer`
                   : "each new contribution adds time and starts the clock again"}
               </p>
             </div>
@@ -501,7 +505,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
             </div>
 
             <p className="-mt-2 text-xs leading-relaxed text-[var(--faint)]">
-              Secure live payments. Every contribution adds time to the virtual sleep timer in real-time.
+              Secure checkout. Every contribution adds time to the virtual sleep timer in real time.
             </p>
 
             {/* stats */}
@@ -514,7 +518,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
                 </p>
 
                 <p className="mt-0.5 text-[9px] uppercase tracking-[0.12em] text-[var(--faint)] min-[430px]:text-[10px] sm:text-[11px] sm:tracking-wider">
-                  total funded
+                  total contributed
                 </p>
               </div>
 
@@ -590,8 +594,7 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
           </div>
 
           <p className="max-w-xs text-sm leading-relaxed text-[var(--muted)]">
-            Ranked by contribution amount — higher contributions receive higher placement. Rank #1&apos;s product owns the spotlight
-            card.
+            Ranked by contribution amount — higher contributions receive higher placement. Rank #1&apos;s product gets the spotlight card.
           </p>
         </div>
 
@@ -618,7 +621,6 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
 
               <p className="mt-3 max-w-sm text-sm leading-relaxed text-[var(--muted)]">
                 Be the first sponsor to get featured here. Add your brand and showcase your product to everyone.
-                you the inaugural sponsor.
               </p>
 
               <button
@@ -730,8 +732,8 @@ export default function BabyApp({ initial }: { initial: BabyState }) {
             {
               n: "02",
               icon: BedDouble,
-              title: "Sleep while funded",
-              body: "The baby stays asleep while the timer has time. When it hits zero, the crying starts again. Add more time to keep it sleeping.",
+              title: "Virtual sleep timer",
+              body: "The virtual baby stays in its sleeping animation while the timer is active. When the timer reaches zero, the crying animation starts again.",
             },
             {
               n: "03",
@@ -851,7 +853,7 @@ function SpotlightCard({
           </p>
 
           <p className="mt-1 text-[9px] uppercase tracking-[0.1em] text-[var(--faint)] xs:text-[10px] sm:text-[11px] sm:tracking-wider">
-            winning bid
+            top contribution
           </p>
         </div>
 
@@ -861,7 +863,7 @@ function SpotlightCard({
           </p>
 
           <p className="mt-1 text-[9px] uppercase tracking-[0.1em] text-[var(--faint)] xs:text-[10px] sm:text-[11px] sm:tracking-wider">
-            sleep bought
+            sleep time
           </p>
         </div>
 
@@ -883,12 +885,11 @@ function SpotlightCard({
           className="btn-ghost w-full sm:w-auto"
         >
           <Crown className="h-4 w-4 text-[var(--accent-2)]" />
-          Outbid them
+          Make a higher contribution
         </button>
 
         <p className="text-xs leading-relaxed text-[var(--faint)]">
-          any single bid above{" "}
-          {formatMoney(bid.amountCents)} steals this card
+          a higher single contribution can take this spotlight
         </p>
       </div>
     </div>
